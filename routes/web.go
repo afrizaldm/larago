@@ -1,10 +1,12 @@
 package routes
 
-import "simple-api/controllers/web"
+import (
+	"simple-api/controllers/web"
+)
 
 func (r *Router) SetupWeb() {
 
-	r.Engine.LoadHTMLGlob("views/**/*")
+	r.Engine.LoadHTMLGlob("views/**.html")
 
 	r.Engine.GET("/", web.Dashboard)
 }
