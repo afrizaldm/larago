@@ -6,10 +6,10 @@ import (
 
 func main() {
 	// Buat instance dari WebRouter
-	webRouter := &routes.WebRouter{}
+	r := routes.Router{}
 
 	// Setup router
-	r := webRouter.SetupRouter()
+	r.Setup()
 
 	// Jalankan server
 	r.Engine.Run()
