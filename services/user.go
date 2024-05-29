@@ -1,7 +1,7 @@
 package services
 
 import (
-	"simple-api/models"
+	"simple-api/app/models"
 )
 
 func CreateUser(name string, email string) models.User {

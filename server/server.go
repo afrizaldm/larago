@@ -7,8 +7,9 @@ import (
 )
 
 type IServer interface {
-	InstanceRun() string
-	SetupRoutes(routes *[]routes.Router)
+	InstanceRun() *Server
+	SetupRoutes(routes *[]routes.Router) *Server
+	LoadHTMLGlob() *Server
 	setupRoute()
 	Run(port string)
 }
@@ -25,27 +26,52 @@ func NewServer() *Server {
 	}
 }
 
-func (server *Server) InstanceRun() {
+func (server *Server) InstanceRun() *Server {
 
 	// Instalasi Router Baru
 	server.Engine = gin.Default()
 
 	server.SetupRoutes(server.Routes)
 
+	server.LoadHTMLGlob()
+
 	server.Run()
 
+	return server
+
 }
 
-func (server *Server) Setup() {
-	server.Engine = gin.Default()
-}
-
-func (server *Server) SetupRoutes(routes *[]routes.Router) {
+func (server *Server) SetupRoutes(routes *[]routes.Router) *Server {
 	server.Routes = routes
 	for _, route := range *routes {
 		server.setupRoute(route)
 	}
 
+	return server
+}
+
+func (server *Server) LoadHTMLGlob(pattern ...string) *Server {
+
+	p := "resources/views/**.html"
+	if len(pattern) > 0 {
+		p = pattern[0]
+	}
+
+	// Mendefinisikan flag 'mode'
+	// mode := flag.String("mode", "development", "Mode aplikasi (development, production, build)")
+	// flag.Parse()
+
+	// Menggunakan mode untuk menentukan konfigurasi HTMLGlob
+	// switch *mode {
+	// case "build", "production":
+	// 	p = "views/**.html"
+	// default:
+	// 	p = "resources/views/**.html"
+	// }
+
+	server.Engine.LoadHTMLGlob(p)
+
+	return server
 }
 
 func (server *Server) setupRoute(route routes.Router) {

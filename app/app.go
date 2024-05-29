@@ -11,8 +11,6 @@ func Run() {
 	server.SetupRoutes(&[]routes.Router{
 		routes.NewApi(),
 		routes.NewWeb(),
-	})
-
-	server.Run()
+	}).LoadHTMLGlob().Run()
 
 }
