@@ -1,8 +1,13 @@
 package server
 
 import (
+	"errors"
 	"flag"
+	"net/http"
+	"os"
+	"path/filepath"
 	"simple-api/routes"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,7 +15,7 @@ import (
 type IServer interface {
 	SetupRoutes(routes *[]routes.Router) *Server
 	LoadHTMLGlob(pattern ...string) *Server
-	Static() *Server
+	Static(relativePath string, root string) *Server
 	Run(port string)
 }
 
@@ -54,6 +59,34 @@ func (server *Server) LoadHTMLGlob(pattern ...string) *Server {
 	}
 
 	server.Engine.LoadHTMLGlob(p)
+
+	return server
+}
+
+func (server *Server) StaticNonPrefix(root string) *Server {
+
+	// Serve static files from the "public" directory
+	// server.Engine.Static(relativePath, root)
+
+	// Serve static files from the "public" directory at the root URL
+	server.Engine.NoRoute(func(c *gin.Context) {
+		path := c.Request.URL.Path
+
+		// Ensure path does not contain ".." or other invalid sequences
+		if strings.Contains(path, "..") {
+			c.String(http.StatusBadRequest, "Invalid URL")
+			return
+		}
+
+		// Serve the file if it exists
+		filePath := filepath.Join(root, path)
+		if _, err := os.Stat("/path/to/whatever"); errors.Is(err, os.ErrNotExist) {
+			c.String(http.StatusNotFound, "404 not found")
+			return
+		}
+
+		c.File(filePath)
+	})
 
 	return server
 }
