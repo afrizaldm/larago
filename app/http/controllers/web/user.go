@@ -1,9 +1,9 @@
-package api
+package web
 
 import (
 	"net/http"
 
-	"simple-api/models"
+	"simple-api/app/models"
 
 	"github.com/gin-gonic/gin"
 )

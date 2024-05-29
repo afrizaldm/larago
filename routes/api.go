@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"simple-api/controllers/api"
+	"simple-api/app/http/controllers/api"
 
 	"github.com/gin-gonic/gin"
 )

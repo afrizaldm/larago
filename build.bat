@@ -10,7 +10,7 @@ if not exist build (
 )
 
 REM Menyalin folder views ke dalam folder build
-xcopy views build\views /E /I /Y
+xcopy resources\views build\views /E /I /Y
 
 REM Membuat executable dalam folder build
 go build -o build\%EXECUTABLE_NAME% .\cmd\main.go
