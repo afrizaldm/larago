@@ -1,9 +1,18 @@
 package app
 
 import (
+	"simple-api/routes"
 	"simple-api/server"
 )
 
 func Run() {
-	(&server.Server{}).InstanceRun()
+	server := server.NewServer()
+
+	server.SetupRoutes(&[]routes.Router{
+		routes.NewApi(),
+		routes.NewWeb(),
+	})
+
+	server.Run()
+
 }

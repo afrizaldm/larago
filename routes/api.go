@@ -2,12 +2,20 @@ package routes
 
 import (
 	"simple-api/controllers/api"
+
+	"github.com/gin-gonic/gin"
 )
 
-func (r *Router) SetupApi() {
+type Api struct{}
+
+func NewApi() *Api {
+	return &Api{}
+}
+
+func (a *Api) Setup(r *gin.Engine) {
 
 	// Daftarkan route dan handler
-	r.Engine.POST("/api/register", api.RegisterUser)
-	r.Engine.GET("/api", api.Dashboard)
-	r.Engine.GET("/api/hello", api.Hallo)
+	r.POST("/api/register", api.RegisterUser)
+	r.GET("/api", api.Dashboard)
+	r.GET("/api/hello", api.Hallo)
 }

@@ -2,11 +2,19 @@ package routes
 
 import (
 	"simple-api/controllers/web"
+
+	"github.com/gin-gonic/gin"
 )
 
-func (r *Router) SetupWeb() {
+type Web struct{}
 
-	r.Engine.LoadHTMLGlob("views/**.html")
+func NewWeb() *Web {
+	return &Web{}
+}
 
-	r.Engine.GET("/", web.Dashboard)
+func (w *Web) Setup(r *gin.Engine) {
+
+	r.LoadHTMLGlob("views/**.html")
+
+	r.GET("/", web.Dashboard)
 }

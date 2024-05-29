@@ -1,0 +1,5 @@
+# Ignore all binary files
+*.exe
+*.dll
+*.so
+*.dylib
