@@ -14,7 +14,7 @@ func NewWeb() *Web {
 
 func (w *Web) Setup(r *gin.Engine) {
 
-	r.LoadHTMLGlob("views/**.html")
+	r.LoadHTMLGlob("resources/views/**.html")
 
 	r.GET("/", web.Dashboard)
 }
