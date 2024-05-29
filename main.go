@@ -1,16 +1,9 @@
 package main
 
 import (
-	"simple-api/routes"
+	"simple-api/app"
 )
 
 func main() {
-	// Buat instance dari WebRouter
-	r := routes.Router{}
-
-	// Setup router
-	r.Setup()
-
-	// Jalankan server
-	r.Engine.Run()
+	app.Run()
 }
