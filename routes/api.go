@@ -15,4 +15,7 @@ func (a *Api) Setup(r *ExtendedEngine) {
 	// Daftarkan route dan handler
 	r.GET("/api", api.Dashboard)
 	r.GET("/api/hello", api.Hallo)
+
+	r.RESOURCES("/api/user", &api.UserController{})
+
 }
