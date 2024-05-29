@@ -8,10 +8,9 @@ import (
 )
 
 type IServer interface {
-	InstanceRun() *Server
 	SetupRoutes(routes *[]routes.Router) *Server
 	LoadHTMLGlob(pattern ...string) *Server
-	setupRoute()
+	Static() *Server
 	Run(port string)
 }
 
@@ -27,25 +26,10 @@ func NewServer() *Server {
 	}
 }
 
-func (server *Server) InstanceRun() *Server {
-
-	// Instalasi Router Baru
-	server.Engine = &routes.ExtendedEngine{Engine: gin.Default()}
-
-	server.SetupRoutes(server.Routes)
-
-	server.LoadHTMLGlob()
-
-	server.Run()
-
-	return server
-
-}
-
 func (server *Server) SetupRoutes(routes *[]routes.Router) *Server {
 	server.Routes = routes
 	for _, route := range *routes {
-		server.setupRoute(route)
+		route.Setup(server.Engine)
 	}
 
 	return server
@@ -74,8 +58,12 @@ func (server *Server) LoadHTMLGlob(pattern ...string) *Server {
 	return server
 }
 
-func (server *Server) setupRoute(route routes.Router) {
-	route.Setup(server.Engine)
+func (server *Server) Static(relativePath string, root string) *Server {
+
+	// Serve static files from the "public" directory
+	server.Engine.Static(relativePath, root)
+
+	return server
 }
 
 func (server *Server) Run(port ...string) {

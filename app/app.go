@@ -15,6 +15,8 @@ func Run() {
 
 	server.LoadHTMLGlob()
 
+	server.Static("/public", "./public")
+
 	server.Run()
 
 }

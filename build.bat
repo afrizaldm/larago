@@ -14,7 +14,7 @@ if not exist build (
 )
 
 REM Menyalin folder views ke dalam folder build
-xcopy public build /E /I /Y
+xcopy public build\public /E /I /Y
 
 REM Menyalin folder views ke dalam folder build
 xcopy resources\views build\views /E /I /Y
