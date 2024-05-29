@@ -16,13 +16,13 @@ type IServer interface {
 }
 
 type Server struct {
-	Engine *gin.Engine
+	Engine *routes.ExtendedEngine
 	Routes *[]routes.Router
 }
 
 func NewServer() *Server {
 	return &Server{
-		Engine: gin.Default(),
+		Engine: &routes.ExtendedEngine{Engine: gin.Default()},
 		Routes: &[]routes.Router{},
 	}
 }
@@ -30,7 +30,7 @@ func NewServer() *Server {
 func (server *Server) InstanceRun() *Server {
 
 	// Instalasi Router Baru
-	server.Engine = gin.Default()
+	server.Engine = &routes.ExtendedEngine{Engine: gin.Default()}
 
 	server.SetupRoutes(server.Routes)
 
