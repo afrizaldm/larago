@@ -17,7 +17,7 @@ REM Menyalin folder views ke dalam folder build
 xcopy public build /E /I /Y
 
 REM Menyalin folder views ke dalam folder build
-xcopy resources\views build\resources\views /E /I /Y
+xcopy resources\views build\views /E /I /Y
 
 REM Membuat executable dalam folder build
 go build -o build\%EXECUTABLE_NAME% .\cmd\main.go

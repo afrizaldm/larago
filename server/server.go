@@ -1,6 +1,7 @@
 package server
 
 import (
+	"flag"
 	"simple-api/routes"
 
 	"github.com/gin-gonic/gin"
@@ -9,7 +10,7 @@ import (
 type IServer interface {
 	InstanceRun() *Server
 	SetupRoutes(routes *[]routes.Router) *Server
-	LoadHTMLGlob() *Server
+	LoadHTMLGlob(pattern ...string) *Server
 	setupRoute()
 	Run(port string)
 }
@@ -52,22 +53,21 @@ func (server *Server) SetupRoutes(routes *[]routes.Router) *Server {
 
 func (server *Server) LoadHTMLGlob(pattern ...string) *Server {
 
-	p := "resources/views/**.html"
-	if len(pattern) > 0 {
-		p = pattern[0]
+	var p string
+	debug := flag.Bool("debug", false, "Mode DEBUG")
+	flag.Parse()
+
+	if *debug {
+		p = "resources/views/**.html"
+		if len(pattern) > 0 {
+			p = pattern[0]
+		}
+	} else {
+		p = "views/**.html"
+		if len(pattern) > 1 {
+			p = pattern[1]
+		}
 	}
-
-	// Mendefinisikan flag 'mode'
-	// mode := flag.String("mode", "development", "Mode aplikasi (development, production, build)")
-	// flag.Parse()
-
-	// Menggunakan mode untuk menentukan konfigurasi HTMLGlob
-	// switch *mode {
-	// case "build", "production":
-	// 	p = "views/**.html"
-	// default:
-	// 	p = "resources/views/**.html"
-	// }
 
 	server.Engine.LoadHTMLGlob(p)
 
