@@ -31,9 +31,9 @@ func NewServer() *Server {
 	}
 }
 
-func (server *Server) SetupRoutes(routes *[]routes.Router) *Server {
-	server.Routes = routes
-	for _, route := range *routes {
+func (server *Server) SetupRoutes(routes ...routes.Router) *Server {
+	server.Routes = &routes
+	for _, route := range routes {
 		route.Setup(server.Engine)
 	}
 

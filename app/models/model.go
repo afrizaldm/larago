@@ -1,27 +1,15 @@
 package models
 
-import (
-	"gorm.io/driver/sqlite"
-	"gorm.io/gorm"
-)
+import "simple-api/database"
 
-var DB *gorm.DB
+var DB *database.Database
 
-type Database struct {
-	*gorm.DB
-}
+func Setup() {
+	// Initialize the database
+	DB = database.NewDatabase()
 
-var database *Database
-
-func (d *Database) Connection() {
-	db, err := gorm.Open(sqlite.Open("./database/database.sqlite"), &gorm.Config{})
-	if err != nil {
-		panic("failed to connect database")
-	}
-
-	database.DB = db
-}
-
-func (d *Database) AutoMigration() {
-	d.DB.AutoMigrate(&User{})
+	DB.AutoMigrate(
+		&User{},
+		&Car{},
+	)
 }
