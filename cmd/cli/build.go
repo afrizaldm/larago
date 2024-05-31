@@ -22,12 +22,30 @@ var BuildCommand cli.Command = cli.Command{
 			log.Fatalf("Failed to create build directory: %v", err)
 		}
 
+		// Hapus folder build\database jika ada
+		if err := os.RemoveAll("build\\database"); err != nil {
+			log.Fatalf("Failed to remove build directory: %v", err)
+		}
+
+		// Membuat folder build\database
+		if err := os.Mkdir("build\\database", 0755); err != nil {
+			log.Fatalf("Failed to create build directory: %v", err)
+		}
+
 		// Menyalin folder public
 		cmd := exec.Command("xcopy", "public", "build\\public", "/E", "/I", "/Y")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
 			log.Fatalf("Failed to copy public directory: %v", err)
+		}
+
+		// Menyalin basis data dari database\database.sqlite ke build\database.sqlite
+		cmd = exec.Command("xcopy", "database\\database.sqlite", "build\\database", "/Y")
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+		if err := cmd.Run(); err != nil {
+			log.Fatalf("Gagal menyalin basis data: %v", err)
 		}
 
 		// Menyalin folder views
