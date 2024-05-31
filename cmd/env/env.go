@@ -17,9 +17,9 @@ type IENV struct {
 	DB_PASSWORD   string
 }
 
-var ENV *IENV
+var ENV IENV
 
-func Load() *IENV {
+func Load() IENV {
 	// Memuat variabel lingkungan dari file .env
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Gagal memuat file .env: %v", err)

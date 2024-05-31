@@ -5,6 +5,8 @@ import (
 	"os"
 	"os/exec"
 
+	"simple-api/cmd/env"
+
 	"github.com/urfave/cli/v2"
 )
 
@@ -12,6 +14,8 @@ var BuildCommand cli.Command = cli.Command{
 	Name:  "build",
 	Usage: "Build the Go application",
 	Action: func(c *cli.Context) error {
+		var env = env.Load()
+
 		// Hapus folder build jika ada
 		if err := os.RemoveAll("build"); err != nil {
 			log.Fatalf("Failed to remove build directory: %v", err)
@@ -57,7 +61,8 @@ var BuildCommand cli.Command = cli.Command{
 		}
 
 		// Membuat executable
-		cmd = exec.Command("go", "build", "-o", "build\\main.exe", "./cmd/main.go")
+		var filename string = "build\\" + env.APP_NAME + ".exe"
+		cmd = exec.Command("go", "build", "-o", filename, "./cmd/main.go")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
