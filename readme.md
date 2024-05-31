@@ -13,7 +13,7 @@ CLI ini menyediakan berbagai perintah yang memudahkan dalam pengembangan dan pen
      - Membuat executable dengan perintah `go build -o build/main.exe ./cmd/main.go`.
    - **Penggunaan**:
     ``` bash
-    > go run main.go build
+    > artisan build
     ```
 
     **hasil build aplikasi akan tersimpan di folder `build`**
@@ -24,7 +24,7 @@ CLI ini menyediakan berbagai perintah yang memudahkan dalam pengembangan dan pen
    - **Penggunaan**:
   
     ``` bash
-    > go run main.go serve
+    > artisan serve
     ```
 
 3. **Clean Command**:
@@ -33,7 +33,7 @@ CLI ini menyediakan berbagai perintah yang memudahkan dalam pengembangan dan pen
    - **Penggunaan**: 
 
     ``` bash
-    > go run main.go clean
+    > artisan clean
     ```
 
 

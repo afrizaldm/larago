@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	c "simple-api/cmd/cli"
+	c "simple-api/cmd/commands"
 
 	"github.com/urfave/cli/v2"
 )
