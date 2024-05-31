@@ -8,14 +8,14 @@ import (
 )
 
 type Router interface {
-	Setup(r *ExtendedEngine)
+	Setup(r *Engine)
 }
 
-type ExtendedEngine struct {
+type Engine struct {
 	*gin.Engine
 }
 
-func (e ExtendedEngine) RESOURCES(uri string, ctr controllers.Resources) {
+func (e Engine) RESOURCES(uri string, ctr controllers.Resources) {
 
 	part := getLastPartOfPath(uri)
 

@@ -10,7 +10,7 @@ func NewApi() *Api {
 	return &Api{}
 }
 
-func (a *Api) Setup(r *ExtendedEngine) {
+func (a *Api) Setup(r *Engine) {
 
 	// Daftarkan route dan handler
 	r.GET("/api", api.Dashboard)

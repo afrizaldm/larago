@@ -10,7 +10,7 @@ func NewWeb() *Web {
 	return &Web{}
 }
 
-func (w *Web) Setup(r *ExtendedEngine) {
+func (w *Web) Setup(r *Engine) {
 
 	r.GET("/", web.Dashboard)
 }

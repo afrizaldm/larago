@@ -20,19 +20,16 @@ type IServer interface {
 }
 
 type Server struct {
-	Engine *routes.ExtendedEngine
-	Routes *[]routes.Router
+	*routes.Engine
 }
 
 func NewServer() *Server {
 	return &Server{
-		Engine: &routes.ExtendedEngine{Engine: gin.Default()},
-		Routes: &[]routes.Router{},
+		&routes.Engine{Engine: gin.Default()},
 	}
 }
 
 func (server *Server) SetupRoutes(routes ...routes.Router) *Server {
-	server.Routes = &routes
 	for _, route := range routes {
 		route.Setup(server.Engine)
 	}
