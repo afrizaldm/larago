@@ -12,12 +12,12 @@ type Database struct {
 func NewDatabase() *Database {
 	d := &Database{}
 
-	d.Connection()
+	d.Connect()
 
 	return d
 }
 
-func (d *Database) Connection() *Database {
+func (d *Database) Connect() *Database {
 	db, err := gorm.Open(sqlite.Open("database/database.sqlite"), &gorm.Config{})
 
 	if err != nil {
