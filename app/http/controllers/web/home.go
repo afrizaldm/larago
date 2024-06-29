@@ -11,3 +11,7 @@ func Dashboard(c *gin.Context) {
 		"title": "Dashboard",
 	})
 }
+
+func Ping(c *gin.Context) {
+	c.String(http.StatusOK, "pong")
+}

@@ -19,14 +19,14 @@ func (e Engine) RESOURCES(uri string, ctr controllers.Resources) {
 
 	part := getLastPartOfPath(uri)
 
-	e.GET(uri, ctr.Index)
-	e.GET(uri+"/create", ctr.Create)
-	e.POST(uri, ctr.Store)
-	e.GET(uri+"/:"+part, ctr.Show)
-	e.GET(uri+"/:"+part+"/edit", ctr.Edit)
-	e.PUT(uri+"/:"+part, ctr.Update)
-	e.PATCH(uri+"/:"+part, ctr.Update)
-	e.DELETE(uri+"/:"+part, ctr.Destroy)
+	e.GET(uri, ctr.Index)                  // index
+	e.GET(uri+"/create", ctr.Create)       // create
+	e.POST(uri, ctr.Store)                 // store
+	e.GET(uri+"/:"+part, ctr.Show)         // show
+	e.GET(uri+"/:"+part+"/edit", ctr.Edit) // edit
+	e.PUT(uri+"/:"+part, ctr.Update)       // update
+	e.PATCH(uri+"/:"+part, ctr.Update)     // update
+	e.DELETE(uri+"/:"+part, ctr.Destroy)   // destroy
 
 }
 
