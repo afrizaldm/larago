@@ -22,8 +22,6 @@ func Run() {
 
 	server.LoadHTMLGlob()
 
-	println(config.APP_PUBLIC)
-
 	server.Static(config.APP_PUBLIC, "./"+config.APP_PUBLIC)
 
 	server.Run(config.APP_PORT)

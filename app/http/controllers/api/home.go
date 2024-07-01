@@ -17,3 +17,7 @@ func Hallo(c *gin.Context) {
 		"message": "Hallo",
 	})
 }
+
+func Ping(c *gin.Context) {
+	c.String(http.StatusOK, "pong")
+}

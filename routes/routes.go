@@ -9,13 +9,19 @@ import (
 
 type Router interface {
 	Setup(r *Engine)
+	Group(uri string, handlers ...gin.HandlerFunc) *RouterGroup
 }
 
 type Engine struct {
 	*gin.Engine
 }
 
-func (e Engine) RESOURCES(uri string, ctr controllers.Resources) {
+type RouterGroup struct {
+	*Engine
+	*gin.RouterGroup
+}
+
+func (e *Engine) RESOURCES(uri string, ctr controllers.Resources) {
 
 	part := getLastPartOfPath(uri)
 
@@ -28,6 +34,17 @@ func (e Engine) RESOURCES(uri string, ctr controllers.Resources) {
 	e.PATCH(uri+"/:"+part, ctr.Update)     // update
 	e.DELETE(uri+"/:"+part, ctr.Destroy)   // destroy
 
+}
+
+func (e *Engine) Group(uri string, handlers ...gin.HandlerFunc) *RouterGroup {
+	routeGroup := e.Engine.Group(uri, handlers...)
+
+	r := &RouterGroup{
+		Engine:      e,
+		RouterGroup: routeGroup,
+	}
+
+	return r
 }
 
 func getLastPartOfPath(path string) string {

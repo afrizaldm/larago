@@ -4,7 +4,9 @@ import (
 	"simple-api/app/http/controllers/web"
 )
 
-type Web struct{}
+type Web struct {
+	Router
+}
 
 func NewWeb() *Web {
 	return &Web{}
