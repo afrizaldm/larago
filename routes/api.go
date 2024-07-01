@@ -18,4 +18,6 @@ func (a *Api) Setup(r *Engine) {
 
 	r.RESOURCES("/api/user", &api.UserController{})
 
+	r.RESOURCES("/api/car", &api.CarController{})
+
 }

@@ -15,6 +15,4 @@ func (w *Web) Setup(r *Engine) {
 	r.GET("/", web.Dashboard)
 	r.GET("/ping", web.Ping)
 	// r.GET("users", web.Users)
-
-	r.RESOURCES("/user", &web.UserController{})
 }
