@@ -23,14 +23,15 @@ func NewDatabase() *Database {
 }
 
 func (d *Database) Connect() *Database {
-	DBConfig := config.NewDatabaseConfig().Load()
+	var DBConfig = config.NewDatabaseConfig().Load()
 
 	var db *gorm.DB
 	var err error
 
 	switch DBConfig.DB_CONNECTION {
 	case "sqlite":
-		db, err = gorm.Open(sqlite.Open("database/database.sqlite"), &gorm.Config{})
+		var filename string = "database/" + DBConfig.DB_DATABASE
+		db, err = gorm.Open(sqlite.Open(filename), &gorm.Config{})
 		if err != nil {
 			panic(fmt.Errorf("failed to connect to SQLite: %v", err))
 		}
