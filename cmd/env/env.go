@@ -9,6 +9,7 @@ import (
 
 type IENV struct {
 	APP_NAME      string
+	APP_PORT      string
 	DB_CONNECTION string
 	DB_HOST       string
 	DB_PORT       string
@@ -17,9 +18,18 @@ type IENV struct {
 	DB_PASSWORD   string
 }
 
-var ENV IENV
+var ENV *IENV = nil
 
-func Load() IENV {
+func Load() *IENV {
+
+	// Check if ENV is already initialized
+	if ENV != nil {
+		return ENV
+	}
+
+	// Initialize ENV
+	ENV = &IENV{}
+
 	// Memuat variabel lingkungan dari file .env
 	if err := godotenv.Load(); err != nil {
 		log.Fatalf("Gagal memuat file .env: %v", err)
@@ -27,6 +37,7 @@ func Load() IENV {
 
 	// Mengakses variabel lingkungan yang telah dimuat
 	ENV.APP_NAME = os.Getenv("APP_NAME")
+	ENV.APP_PORT = os.Getenv("APP_PORT")
 	ENV.DB_CONNECTION = os.Getenv("DB_CONNECTION")
 	ENV.DB_HOST = os.Getenv("DB_HOST")
 	ENV.DB_PORT = os.Getenv("DB_PORT")

@@ -2,11 +2,14 @@ package app
 
 import (
 	"simple-api/app/models"
+	"simple-api/config"
 	"simple-api/routes"
 	"simple-api/server"
 )
 
 func Run() {
+
+	config := config.Load()
 
 	models.Setup()
 
@@ -19,8 +22,10 @@ func Run() {
 
 	server.LoadHTMLGlob()
 
-	server.Static("public", "./public")
+	println(config.APP_PUBLIC)
 
-	server.Run()
+	server.Static(config.APP_PUBLIC, "./"+config.APP_PUBLIC)
+
+	server.Run(config.APP_PORT)
 
 }
