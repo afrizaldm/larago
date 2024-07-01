@@ -9,7 +9,7 @@ import (
 
 func Run() {
 
-	config := config.Load()
+	config := config.NewAppConfig().Load()
 
 	models.Setup()
 

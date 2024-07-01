@@ -13,7 +13,9 @@ var BuildCommand cli.Command = cli.Command{
 	Name:  "build",
 	Usage: "Build the Go application",
 	Action: func(c *cli.Context) error {
-		var config = config.Load()
+		var appConfig = config.NewAppConfig().Load()
+		var DBConfig = config.NewDatabaseConfig().Load()
+		var cmd *exec.Cmd
 
 		// Hapus folder build jika ada
 		if err := os.RemoveAll("build"); err != nil {
@@ -30,25 +32,27 @@ var BuildCommand cli.Command = cli.Command{
 			log.Fatalf("Failed to remove build directory: %v", err)
 		}
 
-		// Membuat folder build\database
-		if err := os.Mkdir("build\\database", 0755); err != nil {
-			log.Fatalf("Failed to create build directory: %v", err)
+		if DBConfig.DB_CONNECTION == "sqlite" {
+			// Membuat folder build\database
+			if err := os.Mkdir("build\\database", 0755); err != nil {
+				log.Fatalf("Failed to create build directory: %v", err)
+			}
+
+			// Menyalin basis data dari database\database.sqlite ke build\database.sqlite
+			cmd = exec.Command("xcopy", "database\\database.sqlite", "build\\database", "/Y")
+			cmd.Stdout = os.Stdout
+			cmd.Stderr = os.Stderr
+			if err := cmd.Run(); err != nil {
+				log.Fatalf("Gagal menyalin basis data: %v", err)
+			}
 		}
 
 		// Menyalin folder public
-		cmd := exec.Command("xcopy", "public", "build\\public", "/E", "/I", "/Y")
+		cmd = exec.Command("xcopy", "public", "build\\public", "/E", "/I", "/Y")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {
 			log.Fatalf("Failed to copy public directory: %v", err)
-		}
-
-		// Menyalin basis data dari database\database.sqlite ke build\database.sqlite
-		cmd = exec.Command("xcopy", "database\\database.sqlite", "build\\database", "/Y")
-		cmd.Stdout = os.Stdout
-		cmd.Stderr = os.Stderr
-		if err := cmd.Run(); err != nil {
-			log.Fatalf("Gagal menyalin basis data: %v", err)
 		}
 
 		// Menyalin folder views
@@ -60,7 +64,7 @@ var BuildCommand cli.Command = cli.Command{
 		}
 
 		// Membuat executable
-		var filename string = "build\\" + config.APP_NAME + ".exe"
+		var filename string = "build\\" + appConfig.APP_NAME + ".exe"
 		cmd = exec.Command("go", "build", "-o", filename, "./cmd/main.go")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
