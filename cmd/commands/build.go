@@ -61,7 +61,8 @@ var BuildCommand cli.Command = cli.Command{
 		}
 
 		// Membuat executable
-		var filename string = "build\\" + env.APP_NAME + ".exe"
+		var appName string = env.Get("APP_NAME", "main")
+		var filename string = "build\\" + appName + ".exe"
 		cmd = exec.Command("go", "build", "-o", filename, "./cmd/main.go")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
