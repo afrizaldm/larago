@@ -38,23 +38,30 @@ var BuildCommand cli.Command = cli.Command{
 }
 
 func Clean() {
+	appConfig := config.NewAppConfig().Load()
+
 	// Hapus folder build jika ada
-	if err := os.RemoveAll("build"); err != nil {
-		log.Fatalf("Failed to remove build directory: %v", err)
-	}
+	// if err := os.RemoveAll("build"); err != nil {
+	// 	log.Fatalf("Failed to remove build directory: %v", err)
+	// }
 
 	// Membuat folder build
 	if err := os.Mkdir("build", 0755); err != nil {
-		log.Fatalf("Failed to create build directory: %v", err)
-	}
-
-	// Hapus folder build\database jika ada
-	if err := os.RemoveAll("build\\database"); err != nil {
-		log.Fatalf("Failed to remove build directory: %v", err)
+		log.Printf("Failed to create build directory: %v", err)
 	}
 
 	// Hapus folder build\logs jika ada
 	if err := os.RemoveAll("build\\logs"); err != nil {
+		log.Fatalf("Failed to remove build directory: %v", err)
+	}
+
+	// Hapus folder build\logs jika ada
+	if err := os.RemoveAll("build\\" + appConfig.APP_PUBLIC); err != nil {
+		log.Fatalf("Failed to remove build directory: %v", err)
+	}
+
+	// Hapus folder build\logs jika ada
+	if err := os.RemoveAll("build\\views"); err != nil {
 		log.Fatalf("Failed to remove build directory: %v", err)
 	}
 }
@@ -135,6 +142,17 @@ func SetSQlite() {
 	}
 
 	if DBConfig.DB_CONNECTION == "sqlite" {
+
+		// Periksa apakah file ada
+		if _, err := os.Stat("build\\database\\" + DBConfig.DB_DATABASE); err == nil {
+			return
+		}
+
+		// Hapus folder build\database jika ada
+		if err := os.RemoveAll("build\\database"); err != nil {
+			log.Fatalf("Failed to remove build directory: %v", err)
+		}
+
 		// Membuat folder build\database
 		if err := os.Mkdir("build\\database", 0755); err != nil {
 			log.Fatalf("Failed to create build directory: %v", err)
