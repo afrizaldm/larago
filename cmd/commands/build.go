@@ -102,7 +102,37 @@ func SetView() {
 }
 
 func SetSQlite() {
+	var appConfig = config.NewAppConfig().Load()
 	var DBConfig = config.NewDatabaseConfig().Load()
+
+	if appConfig.APP_DB_BUILD_BACKUP {
+		// Buka file asli
+		srcFile, err := os.Open(".\\build\\database\\" + DBConfig.DB_DATABASE)
+		if err != nil {
+			log.Printf("Gagal membuat backup database: %v", err)
+		}
+		defer srcFile.Close()
+
+		datetime := time.Now().Format("2006_01_02 15_04_05_000")
+
+		// Membuat folder build
+		if err := os.MkdirAll("backup\\"+datetime+"\\database\\", 0755); err != nil {
+			log.Fatalf("Failed to create build directory: %v", err)
+		}
+
+		// Buat file tujuan
+		dstFile, err := os.Create("backup\\" + datetime + "\\database\\" + DBConfig.DB_DATABASE)
+		if err != nil {
+			log.Printf("Gagal membuat backup database: %v", err)
+		}
+		defer dstFile.Close()
+
+		// Salin konten dari file asli ke file tujuan
+		_, err = io.Copy(dstFile, srcFile)
+		if err != nil {
+			log.Printf("Gagal menyalin file: %v", err)
+		}
+	}
 
 	if DBConfig.DB_CONNECTION == "sqlite" {
 		// Membuat folder build\database
@@ -111,7 +141,7 @@ func SetSQlite() {
 		}
 
 		// Menyalin basis data dari database\database.sqlite ke build\database.sqlite
-		cmd := exec.Command("xcopy", "database\\database.sqlite", "build\\database", "/Y")
+		cmd := exec.Command("xcopy", "database\\"+DBConfig.DB_DATABASE, "build\\database", "/Y")
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {

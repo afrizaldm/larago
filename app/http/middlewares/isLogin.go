@@ -14,7 +14,8 @@ func IsAuthenticated() gin.HandlerFunc {
 
 		if token != "valid_token" {
 			c.JSON(http.StatusNetworkAuthenticationRequired, gin.H{
-				"message": "You are not authenticated",
+				"isSuccess": false,
+				"message":   "You are not authenticated",
 			})
 			// If user is not logged in, redirect to the login page
 			c.Redirect(http.StatusFound, "/login")

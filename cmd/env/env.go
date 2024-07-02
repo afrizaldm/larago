@@ -9,16 +9,17 @@ import (
 )
 
 type IENV struct {
-	APP_NAME           string
-	APP_PORT           string
-	APP_PUBLIC         string
-	APP_ACTIVE_LOGGING string
-	DB_CONNECTION      string
-	DB_HOST            string
-	DB_PORT            string
-	DB_DATABASE        string
-	DB_USERNAME        string
-	DB_PASSWORD        string
+	APP_NAME            string
+	APP_PORT            string
+	APP_PUBLIC          string
+	APP_ACTIVE_LOGGING  string
+	APP_DB_BUILD_BACKUP string
+	DB_CONNECTION       string
+	DB_HOST             string
+	DB_PORT             string
+	DB_DATABASE         string
+	DB_USERNAME         string
+	DB_PASSWORD         string
 }
 
 var ENV *IENV = nil
@@ -43,6 +44,7 @@ func Load() *IENV {
 	ENV.APP_PORT = os.Getenv("APP_PORT")
 	ENV.APP_PUBLIC = os.Getenv("APP_PUBLIC")
 	ENV.APP_ACTIVE_LOGGING = os.Getenv("APP_ACTIVE_LOGGING")
+	ENV.APP_DB_BUILD_BACKUP = os.Getenv("APP_DB_BUILD_BACKUP")
 	ENV.DB_CONNECTION = os.Getenv("DB_CONNECTION")
 	ENV.DB_HOST = os.Getenv("DB_HOST")
 	ENV.DB_PORT = os.Getenv("DB_PORT")
