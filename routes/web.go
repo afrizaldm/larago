@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"simple-api/app/http/controllers/web"
+	webController "simple-api/app/http/controllers/web"
 )
 
 type Web struct {
@@ -14,7 +14,7 @@ func NewWeb() *Web {
 
 func (w *Web) Setup(r *Engine) {
 
-	r.GET("/", web.Dashboard)
-	r.GET("/ping", web.Ping)
+	r.GET("/", webController.Dashboard)
+	r.GET("/ping", webController.Ping)
 	// r.GET("users", web.Users)
 }
