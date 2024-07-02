@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"fmt"
+	"simple-api/cmd/logger"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -19,6 +20,8 @@ func Log() gin.HandlerFunc {
 		// Log details
 		duration := time.Since(start)
 		status := c.Writer.Status()
-		fmt.Printf("%s %s %d %s\n", c.Request.Method, c.Request.URL.Path, status, duration)
+		logValue := fmt.Sprintf("%s %s %d %s", c.Request.Method, c.Request.URL.Path, status, duration)
+
+		logger.Write(logValue)
 	}
 }
