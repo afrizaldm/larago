@@ -3,6 +3,7 @@ package server
 import (
 	"flag"
 	"log"
+	"os"
 	"simple-api/routes"
 
 	"github.com/gin-gonic/gin"
@@ -36,10 +37,12 @@ func (server *Server) SetupRoutes(routes ...routes.Router) *Server {
 func (server *Server) LoadHTMLGlob(pattern ...string) *Server {
 
 	var p string
-	debug := flag.Bool("debug", false, "Mode DEBUG")
+	// debug := flag.Bool("debug", false, "Mode DEBUG")
+	debug := os.Getenv("GIN_MODE")
+	println("debug", debug)
 	flag.Parse()
 
-	if *debug {
+	if debug == "debug" {
 		log.Println("Debug Mode")
 		p = "resources/views/**.html"
 		if len(pattern) > 0 {
