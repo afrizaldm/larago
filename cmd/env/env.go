@@ -3,19 +3,22 @@ package env
 import (
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
 
 type IENV struct {
-	APP_NAME      string
-	APP_PORT      string
-	DB_CONNECTION string
-	DB_HOST       string
-	DB_PORT       string
-	DB_DATABASE   string
-	DB_USERNAME   string
-	DB_PASSWORD   string
+	APP_NAME           string
+	APP_PORT           string
+	APP_PUBLIC         string
+	APP_ACTIVE_LOGGING string
+	DB_CONNECTION      string
+	DB_HOST            string
+	DB_PORT            string
+	DB_DATABASE        string
+	DB_USERNAME        string
+	DB_PASSWORD        string
 }
 
 var ENV *IENV = nil
@@ -38,6 +41,8 @@ func Load() *IENV {
 	// Mengakses variabel lingkungan yang telah dimuat
 	ENV.APP_NAME = os.Getenv("APP_NAME")
 	ENV.APP_PORT = os.Getenv("APP_PORT")
+	ENV.APP_PUBLIC = os.Getenv("APP_PUBLIC")
+	ENV.APP_ACTIVE_LOGGING = os.Getenv("APP_ACTIVE_LOGGING")
 	ENV.DB_CONNECTION = os.Getenv("DB_CONNECTION")
 	ENV.DB_HOST = os.Getenv("DB_HOST")
 	ENV.DB_PORT = os.Getenv("DB_PORT")
@@ -54,4 +59,52 @@ func (ienv *IENV) Get(key string, defaultValue string) string {
 		return defaultValue
 	}
 	return value
+}
+
+func (ienv *IENV) GetBool(key string, defaultValue bool) bool {
+	value := os.Getenv(key)
+	if value == "" {
+		return defaultValue
+	}
+	return ienv.ParseBool(value)
+}
+
+func (ienv *IENV) GetInt(key string, defaultValue int) int {
+	value := os.Getenv(key)
+	if value == "" {
+		return defaultValue
+	}
+	return ienv.Atoi(value)
+}
+
+func (ienv *IENV) GetFloat64(key string, defaultValue float64) float64 {
+	value := os.Getenv(key)
+	if value == "" {
+		return defaultValue
+	}
+	return ienv.ParseFloat64(value)
+}
+
+func (ienv *IENV) ParseBool(value string) bool {
+	result, err := strconv.ParseBool(value)
+	if err != nil {
+		return false // nilai default
+	}
+	return result
+}
+
+func (ienv *IENV) Atoi(value string) int {
+	result, err := strconv.Atoi(value)
+	if err != nil {
+		return 0 // nilai default
+	}
+	return result
+}
+
+func (ienv *IENV) ParseFloat64(value string) float64 {
+	result, err := strconv.ParseFloat(value, 64)
+	if err != nil {
+		return 0 // nilai default
+	}
+	return result
 }

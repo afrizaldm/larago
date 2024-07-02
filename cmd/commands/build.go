@@ -32,6 +32,11 @@ var BuildCommand cli.Command = cli.Command{
 			log.Fatalf("Failed to remove build directory: %v", err)
 		}
 
+		// Hapus folder build\logs jika ada
+		if err := os.RemoveAll("build\\logs"); err != nil {
+			log.Fatalf("Failed to remove build directory: %v", err)
+		}
+
 		if DBConfig.DB_CONNECTION == "sqlite" {
 			// Membuat folder build\database
 			if err := os.Mkdir("build\\database", 0755); err != nil {
@@ -44,6 +49,13 @@ var BuildCommand cli.Command = cli.Command{
 			cmd.Stderr = os.Stderr
 			if err := cmd.Run(); err != nil {
 				log.Fatalf("Gagal menyalin basis data: %v", err)
+			}
+		}
+
+		if appConfig.APP_ACTIVE_LOGGING {
+			// Membuat folder build\logs
+			if err := os.Mkdir("build\\logs", 0755); err != nil {
+				log.Fatalf("Failed to create build directory: %v", err)
 			}
 		}
 
