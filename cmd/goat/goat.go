@@ -17,7 +17,7 @@ func main() {
 		Commands: c.UseCommands(
 			&c.BuildCommand,
 			&c.ServeCommand,
-			&c.CleanCommand,
+			&c.BuildCleanCommand,
 		),
 	}
 

@@ -7,8 +7,8 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-var CleanCommand cli.Command = cli.Command{
-	Name:  "clean",
+var BuildCleanCommand cli.Command = cli.Command{
+	Name:  "build:clean",
 	Usage: "Clean the build directory",
 	Action: func(c *cli.Context) error {
 		// Hapus folder build jika ada
