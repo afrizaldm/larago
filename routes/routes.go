@@ -33,9 +33,17 @@ func (e *Engine) RESOURCES(uri string, ctr controllers.Resources) {
 }
 
 func (e *Engine) Group(uri string, handlers ...gin.HandlerFunc) *Engine {
+
 	routeGroup := e.Engine.Group(uri, handlers...)
 
 	e.RouterGroup = *routeGroup
+
+	return e
+}
+
+func (e *Engine) Use(handlers ...gin.HandlerFunc) *Engine {
+
+	e.Engine.Use(handlers...)
 
 	return e
 }

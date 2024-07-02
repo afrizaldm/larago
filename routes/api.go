@@ -1,6 +1,9 @@
 package routes
 
-import apiController "simple-api/app/http/controllers/api"
+import (
+	apiController "simple-api/app/http/controllers/api"
+	"simple-api/app/http/middlewares"
+)
 
 type Api struct {
 	Router
@@ -13,6 +16,8 @@ func NewApi() *Api {
 func (a *Api) Setup(r *Engine) {
 
 	api := r.Group("api")
+
+	api.Use(middlewares.IsAuthenticated())
 	{
 		api.RouterGroup.GET("/hello", apiController.Hallo)
 
