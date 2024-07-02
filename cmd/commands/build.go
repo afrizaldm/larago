@@ -82,7 +82,9 @@ func SetENV() {
 }
 
 func SetStatic() {
-	cmd := exec.Command("xcopy", "public", "build\\public", "/E", "/I", "/Y")
+	appConfig := config.NewAppConfig().Load()
+
+	cmd := exec.Command("xcopy", appConfig.APP_PUBLIC, "build\\"+appConfig.APP_PUBLIC, "/E", "/I", "/Y")
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	if err := cmd.Run(); err != nil {

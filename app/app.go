@@ -9,7 +9,7 @@ import (
 
 func Run() {
 
-	config := config.NewAppConfig().Load()
+	appConfig := config.NewAppConfig().Load()
 
 	models.Setup()
 
@@ -22,8 +22,8 @@ func Run() {
 
 	server.LoadHTMLGlob()
 
-	server.Static(config.APP_PUBLIC, "./"+config.APP_PUBLIC)
+	server.Static(appConfig.APP_PUBLIC, "./"+appConfig.APP_PUBLIC)
 
-	server.Run(config.APP_PORT)
+	server.Run(appConfig.APP_PORT)
 
 }
