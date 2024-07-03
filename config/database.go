@@ -1,6 +1,6 @@
 package config
 
-import "simple-api/cmd/env"
+import "simple-api/boostrap/module/env"
 
 type DatabaseConfig struct {
 	Config

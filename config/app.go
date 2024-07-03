@@ -1,7 +1,7 @@
 package config
 
 import (
-	"simple-api/cmd/env"
+	"simple-api/boostrap/module/env"
 )
 
 type AppConfig struct {
