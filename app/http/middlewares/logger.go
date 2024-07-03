@@ -9,7 +9,7 @@ import (
 )
 
 // LoggingMiddleware logs details about each request
-func Log() gin.HandlerFunc {
+func Logger() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// Start timer
 		start := time.Now()

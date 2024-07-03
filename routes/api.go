@@ -17,7 +17,7 @@ func (a *Api) Setup(r *Engine) {
 
 	api := r.Group("api")
 
-	api.Use(middlewares.Log())
+	api.Use(middlewares.Logger())
 	// api.Use(middlewares.IsAuthenticated())
 	{
 		api.RouterGroup.GET("/", apiController.Ping)
