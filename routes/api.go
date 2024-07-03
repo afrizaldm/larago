@@ -21,6 +21,7 @@ func (a *Api) Setup(r *Engine) {
 	// api.Use(middlewares.IsAuthenticated())
 	{
 		api.RouterGroup.GET("/", apiController.Ping)
+		api.RouterGroup.GET("/ping", apiController.Ping)
 
 		api.RouterGroup.GET("/hello", apiController.Hallo)
 
