@@ -2,7 +2,7 @@ package middlewares
 
 import (
 	"fmt"
-	"simple-api/cmd/logger"
+	"simple-api/boostrap/module/logger"
 	"time"
 
 	"github.com/gin-gonic/gin"
