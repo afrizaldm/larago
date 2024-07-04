@@ -13,32 +13,33 @@ type IJWTService interface {
 	ValidateToken(token string) (*jwt.Token, error)
 }
 
-// type jwtCustomClaims struct {
-// 	Username string `json:"username"`
-// 	IsAdmin  bool   `json:"is_admin"`
-// }
-
-type jwtService struct {
-	secretKey string
-	issuer    string
-	expHour   int
+type JwtService struct {
+	IJWTService
+	issuer  string
+	expHour int
 }
 
-func NewJWTService() *jwtService {
-	return &jwtService{
-		secretKey: "secret_key",  // Ganti dengan kunci rahasia yang lebih kuat
-		issuer:    "issuer_name", // Ganti dengan nama penerbit token
-		expHour:   24,
+var jwtService *JwtService = nil
+
+func NewJWTService() *JwtService {
+
+	if jwtService != nil {
+		return jwtService
+	}
+
+	return &JwtService{
+		issuer:  "default_issuer", // Ganti dengan nama penerbit token
+		expHour: 24,
 	}
 }
 
-func (jwtService *jwtService) GenerateToken(value any) (string, error) {
+func (jwtService *JwtService) GenerateToken(secretKey string, value any) (string, error) {
 	// Isi dengan kunci rahasia yang aman (sebaiknya dari variabel lingkungan).
-	secretKey := []byte(jwtService.secretKey)
+	_secretKey := []byte(secretKey)
 
 	// Buat token dengan klaim (misalnya, ID pengguna).
 	claims := jwt.MapClaims{
-		"value": "",
+		"value": value,
 		"iss":   jwtService.issuer,
 		"exp":   time.Now().Add(time.Hour * time.Duration(jwtService.expHour)).Unix(), // Waktu kedaluwarsa.
 	}
@@ -46,7 +47,7 @@ func (jwtService *jwtService) GenerateToken(value any) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	// Tandatangani token menggunakan kunci rahasia.
-	tokenString, err := token.SignedString(secretKey)
+	tokenString, err := token.SignedString(_secretKey)
 	if err != nil {
 		return "", err
 	}
@@ -54,12 +55,12 @@ func (jwtService *jwtService) GenerateToken(value any) (string, error) {
 	return tokenString, nil
 }
 
-func (jwtService *jwtService) ValidateToken(tokenString string) (*jwt.Token, error) {
-	secretKey := []byte(jwtService.secretKey)
+func (jwtService *JwtService) ValidateToken(secretKey string, tokenString string) (*jwt.Token, error) {
+	_secretKey := []byte(secretKey)
 
 	// Parse token dan verifikasi dengan kunci rahasia.
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return secretKey, nil
+		return _secretKey, nil
 	})
 
 	if err != nil {
@@ -67,7 +68,7 @@ func (jwtService *jwtService) ValidateToken(tokenString string) (*jwt.Token, err
 	}
 
 	if !token.Valid {
-		return nil, fmt.Errorf("token tidak valid")
+		return nil, fmt.Errorf("token is not valid")
 	}
 
 	return token, nil

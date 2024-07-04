@@ -23,11 +23,12 @@ func (a *Api) Setup(r *Engine) {
 		api.RouterGroup.GET("/", apiController.Ping)
 		api.RouterGroup.GET("/ping", apiController.Ping)
 
-		api.RouterGroup.GET("/hello", apiController.Hallo)
-
 		api.RESOURCES("/user", &apiController.UserController{})
 
 		api.RESOURCES("/car", &apiController.CarController{})
+
+		api.RouterGroup.GET("/token/generate", apiController.Generate)
+		api.RouterGroup.GET("/token/validate/:token", apiController.Validate)
 	}
 
 }

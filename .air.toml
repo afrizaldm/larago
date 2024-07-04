@@ -4,7 +4,7 @@ tmp_dir = "tmp"
 
 [build]
   args_bin = []
-  cmd = "go build -o ./tmp cmd/main.go"
+  cmd = ["go build -o ./tmp cmd/main.go"]
   delay = 1000
   exclude_dir = ["build", "node_modules", "logs", "tmp", "public", ".git", "resources", "database"]
   exclude_file = [".gitignore", "packages.json", "readme.md", "tsconfig.json", "tsconfig.node.json"]

@@ -18,6 +18,7 @@ func main() {
 			&c.BuildCommand,
 			&c.ServeCommand,
 			&c.BuildCleanCommand,
+			&c.ConsoleClearCommand,
 		),
 	}
 
