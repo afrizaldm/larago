@@ -16,6 +16,7 @@ type IAppConfig struct {
 	APP_ACTIVE_LOGGING  bool
 	APP_DB_BUILD_BACKUP bool
 	APP_TRUSTED_PROXIES []string
+	APP_SECRET_KEY      string
 }
 
 func NewAppConfig() *AppConfig {
@@ -40,6 +41,7 @@ func (config *AppConfig) Load() *IAppConfig {
 		APP_PUBLIC:          env.Get("APP_PUBLIC", "public"),
 		APP_DB_BUILD_BACKUP: env.GetBool("APP_DB_BUILD_BACKUP", true),
 		APP_TRUSTED_PROXIES: env.GetStringArray("APP_TRUSTED_PROXIES", []string{"0.0.0.0/0"}),
+		APP_SECRET_KEY:      env.Get("APP_SECRET_KEY", "123456789"),
 	}
 
 	return config.Value

@@ -16,6 +16,7 @@ type IENV struct {
 	APP_ACTIVE_LOGGING  string
 	APP_DB_BUILD_BACKUP string
 	APP_TRUSTED_PROXIES string
+	APP_SECRET_KEY      string
 	DB_CONNECTION       string
 	DB_HOST             string
 	DB_PORT             string
@@ -48,6 +49,7 @@ func Load() *IENV {
 	ENV.APP_ACTIVE_LOGGING = os.Getenv("APP_ACTIVE_LOGGING")
 	ENV.APP_DB_BUILD_BACKUP = os.Getenv("APP_DB_BUILD_BACKUP")
 	ENV.APP_TRUSTED_PROXIES = os.Getenv("APP_TRUSTED_PROXIES")
+	ENV.APP_SECRET_KEY = os.Getenv("APP_SECRET_KEY")
 	ENV.DB_CONNECTION = os.Getenv("DB_CONNECTION")
 	ENV.DB_HOST = os.Getenv("DB_HOST")
 	ENV.DB_PORT = os.Getenv("DB_PORT")

@@ -4,10 +4,12 @@ import (
 	"net/http"
 	"simple-api/boostrap/module/auth/jwt"
 
+	"simple-api/config"
+
 	"github.com/gin-gonic/gin"
 )
 
-var secretKey string = "111"
+var appConfig *config.IAppConfig = config.NewAppConfig().Load()
 
 func Dashboard(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
@@ -28,7 +30,7 @@ func Ping(c *gin.Context) {
 func Generate(c *gin.Context) {
 	jwtService := jwt.NewJWTService()
 
-	token, _ := jwtService.GenerateToken(secretKey, gin.H{
+	token, _ := jwtService.GenerateToken(appConfig.APP_SECRET_KEY, gin.H{
 		"email":      "afrizalmahendra212@gmail.com",
 		"username":   "admin",
 		"password":   "admin",
@@ -44,7 +46,7 @@ func Validate(c *gin.Context) {
 	jwtService := jwt.NewJWTService()
 	token := c.Param("token")
 
-	data, err := jwtService.ValidateToken(secretKey, token)
+	data, err := jwtService.ValidateToken(appConfig.APP_SECRET_KEY, token)
 
 	if err == nil {
 
