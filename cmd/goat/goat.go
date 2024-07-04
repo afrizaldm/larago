@@ -19,6 +19,7 @@ func main() {
 			&c.ServeCommand,
 			&c.BuildCleanCommand,
 			&c.ConsoleClearCommand,
+			&c.PreviewCommand,
 		),
 	}
 
