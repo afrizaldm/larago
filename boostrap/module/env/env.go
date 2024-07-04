@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 	"strconv"
+	"strings"
 
 	"github.com/joho/godotenv"
 )
@@ -14,6 +15,7 @@ type IENV struct {
 	APP_PUBLIC          string
 	APP_ACTIVE_LOGGING  string
 	APP_DB_BUILD_BACKUP string
+	APP_TRUSTED_PROXIES string
 	DB_CONNECTION       string
 	DB_HOST             string
 	DB_PORT             string
@@ -45,6 +47,7 @@ func Load() *IENV {
 	ENV.APP_PUBLIC = os.Getenv("APP_PUBLIC")
 	ENV.APP_ACTIVE_LOGGING = os.Getenv("APP_ACTIVE_LOGGING")
 	ENV.APP_DB_BUILD_BACKUP = os.Getenv("APP_DB_BUILD_BACKUP")
+	ENV.APP_TRUSTED_PROXIES = os.Getenv("APP_TRUSTED_PROXIES")
 	ENV.DB_CONNECTION = os.Getenv("DB_CONNECTION")
 	ENV.DB_HOST = os.Getenv("DB_HOST")
 	ENV.DB_PORT = os.Getenv("DB_PORT")
@@ -61,6 +64,14 @@ func (ienv *IENV) Get(key string, defaultValue string) string {
 		return defaultValue
 	}
 	return value
+}
+
+func (ienv *IENV) GetStringArray(key string, defaultValue []string) []string {
+	value := os.Getenv(key)
+	if value == "" {
+		return defaultValue
+	}
+	return strings.Split(value, "|")
 }
 
 func (ienv *IENV) GetBool(key string, defaultValue bool) bool {

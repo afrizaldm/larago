@@ -15,6 +15,7 @@ type IAppConfig struct {
 	APP_PUBLIC          string
 	APP_ACTIVE_LOGGING  bool
 	APP_DB_BUILD_BACKUP bool
+	APP_TRUSTED_PROXIES []string
 }
 
 func NewAppConfig() *AppConfig {
@@ -38,6 +39,7 @@ func (config *AppConfig) Load() *IAppConfig {
 		APP_PORT:            env.Get("APP_PORT", ":8080"),
 		APP_PUBLIC:          env.Get("APP_PUBLIC", "public"),
 		APP_DB_BUILD_BACKUP: env.GetBool("APP_DB_BUILD_BACKUP", true),
+		APP_TRUSTED_PROXIES: env.GetStringArray("APP_TRUSTED_PROXIES", []string{"0.0.0.0/0"}),
 	}
 
 	return config.Value

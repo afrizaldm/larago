@@ -15,6 +15,8 @@ func Run() {
 
 	server := server.NewServer()
 
+	server.SetTrustedProxies(appConfig.APP_TRUSTED_PROXIES)
+
 	server.SetupRoutes(
 		routes.NewWeb(),
 		routes.NewApi(),
