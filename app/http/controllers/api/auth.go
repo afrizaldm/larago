@@ -3,27 +3,15 @@ package api
 import (
 	"net/http"
 	"simple-api/boostrap/module/auth/jwt"
+	"simple-api/config"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Dashboard(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Welcome to the dashboard",
-	})
-}
+// global data in api
+var appConfig *config.IAppConfig = config.NewAppConfig().Load()
 
-func Hallo(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Hallo",
-	})
-}
-
-func Ping(c *gin.Context) {
-	c.String(http.StatusOK, "pong")
-}
-
-func Generate(c *gin.Context) {
+func AuthLogin(c *gin.Context) {
 	jwtService := jwt.NewJWTService()
 
 	token, _ := jwtService.GenerateToken(appConfig.APP_SECRET_KEY, gin.H{
@@ -38,7 +26,12 @@ func Generate(c *gin.Context) {
 	c.String(http.StatusOK, token)
 }
 
-func Validate(c *gin.Context) {
+func AuthLogout(c *gin.Context) {
+
+}
+
+func AuthUser(c *gin.Context) {
+
 	jwtService := jwt.NewJWTService()
 	token := c.Param("token")
 
@@ -61,5 +54,8 @@ func Validate(c *gin.Context) {
 		"data":    nil,
 		"token":   token,
 	})
+}
+
+func RefreshToken(c *gin.Context) {
 
 }

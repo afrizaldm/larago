@@ -16,6 +16,10 @@ type IDatabaseConfig struct {
 	DB_PASSWORD   string
 }
 
+func DatabaseConfigLoad() *IDatabaseConfig {
+	return NewDatabaseConfig().Load()
+}
+
 func NewDatabaseConfig() *DatabaseConfig {
 	return &DatabaseConfig{}
 }
