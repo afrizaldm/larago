@@ -26,7 +26,7 @@ func Ping(c *gin.Context) {
 func Generate(c *gin.Context) {
 	jwtService := jwt.Instance()
 
-	accessToken, _, _ := jwtService.GenerateToken(appConfig.APP_SECRET_KEY, appConfig.APP_SECRET_KEY_REFRESH_TOKEN, gin.H{
+	accessToken, refreshToken, err := jwtService.GenerateToken(appConfig.APP_SECRET_KEY, appConfig.APP_SECRET_KEY_REFRESH_TOKEN, gin.H{
 		"email":      "afrizalmahendra212@gmail.com",
 		"username":   "admin",
 		"password":   "admin",
@@ -35,7 +35,14 @@ func Generate(c *gin.Context) {
 		"deleted_at": 0,
 	})
 
-	c.String(http.StatusOK, accessToken)
+	// c.String(http.StatusOK, "pong")
+	// return
+
+	c.JSON(http.StatusOK, gin.H{
+		"access_token":  accessToken,
+		"refresh_token": refreshToken,
+		"err":           err.Error(),
+	})
 }
 
 func Validate(c *gin.Context) {

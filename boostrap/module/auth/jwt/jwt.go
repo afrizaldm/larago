@@ -29,6 +29,10 @@ func Instance() *JWTService {
 
 func (j *JWTService) GenerateToken(secretKey string, secretKeyRefreshToken string, value any) (string, string, error) {
 	expirationTime := time.Now().Add(15 * time.Minute)
+
+	_secretKey := []byte(secretKey)
+	_secretKeyRefreshToken := []byte(secretKeyRefreshToken)
+
 	claims := &Claims{
 		Value: value,
 		RegisteredClaims: jwt.RegisteredClaims{
@@ -37,7 +41,7 @@ func (j *JWTService) GenerateToken(secretKey string, secretKeyRefreshToken strin
 	}
 
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	accessTokenString, err := accessToken.SignedString(secretKey)
+	accessTokenString, err := accessToken.SignedString(_secretKey)
 	if err != nil {
 		return "", "", err
 	}
@@ -51,7 +55,7 @@ func (j *JWTService) GenerateToken(secretKey string, secretKeyRefreshToken strin
 	}
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
-	refreshTokenString, err := refreshToken.SignedString(secretKeyRefreshToken)
+	refreshTokenString, err := refreshToken.SignedString(_secretKeyRefreshToken)
 	if err != nil {
 		return "", "", err
 	}
