@@ -26,22 +26,30 @@ func Ping(c *gin.Context) {
 func Generate(c *gin.Context) {
 	jwtService := jwt.Instance()
 
-	accessToken, refreshToken, err := jwtService.GenerateToken(appConfig.APP_SECRET_KEY, appConfig.APP_SECRET_KEY_REFRESH_TOKEN, gin.H{
+	tokens, err := jwtService.GenerateTokens(gin.H{
 		"email":      "afrizalmahendra212@gmail.com",
 		"username":   "admin",
 		"password":   "admin",
 		"created_at": 0,
 		"updated_at": 0,
 		"deleted_at": 0,
-	})
+	}, appConfig.APP_SECRET_KEY, appConfig.APP_SECRET_KEY_REFRESH_TOKEN)
 
 	// c.String(http.StatusOK, "pong")
 	// return
 
+	if err == nil {
+		c.JSON(http.StatusOK, gin.H{
+			"tokens": tokens,
+			"err":    err,
+		})
+		return
+	}
+
 	c.JSON(http.StatusOK, gin.H{
-		"access_token":  accessToken,
-		"refresh_token": refreshToken,
-		"err":           err.Error(),
+		"tokens": tokens,
+		"err":    err,
+		"mess":   "must error",
 	})
 }
 

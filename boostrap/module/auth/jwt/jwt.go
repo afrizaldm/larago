@@ -2,6 +2,7 @@ package jwt
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -27,11 +28,10 @@ func Instance() *JWTService {
 	return jwtService
 }
 
-func (j *JWTService) GenerateToken(secretKey string, secretKeyRefreshToken string, value any) (string, string, error) {
-	expirationTime := time.Now().Add(15 * time.Minute)
+func (j *JWTService) GenerateToken(value any, secretKey string, expirationTimeMinute int) (string, error) {
+	expirationTime := time.Now().Add(time.Duration(expirationTimeMinute) * time.Minute)
 
 	_secretKey := []byte(secretKey)
-	_secretKeyRefreshToken := []byte(secretKeyRefreshToken)
 
 	claims := &Claims{
 		Value: value,
@@ -43,24 +43,27 @@ func (j *JWTService) GenerateToken(secretKey string, secretKeyRefreshToken strin
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	accessTokenString, err := accessToken.SignedString(_secretKey)
 	if err != nil {
-		return "", "", err
+		return "", err
 	}
 
-	refreshExpirationTime := time.Now().Add(24 * time.Hour)
-	refreshClaims := &Claims{
-		Value: value,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(refreshExpirationTime),
-		},
+	return accessTokenString, nil
+}
+
+func (j *JWTService) GenerateTokens(value any, secretKeys ...string) ([]string, error) {
+	if len(secretKeys) == 0 {
+		return nil, fmt.Errorf("no secret keys provided")
 	}
 
-	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
-	refreshTokenString, err := refreshToken.SignedString(_secretKeyRefreshToken)
-	if err != nil {
-		return "", "", err
+	var tokens []string
+	for _, secretKey := range secretKeys {
+		token, err := jwtService.GenerateToken(value, secretKey, 1440)
+		if err != nil {
+			return nil, err
+		}
+		tokens = append(tokens, token)
 	}
 
-	return accessTokenString, refreshTokenString, nil
+	return tokens, nil
 }
 
 func (j *JWTService) ValidateToken(secretKey string, tokenString string) (*Claims, error) {

@@ -14,21 +14,20 @@ var appConfig *config.IAppConfig = config.NewAppConfig().Load()
 func AuthLogin(c *gin.Context) {
 	jwtService := jwt.Instance()
 
-	accessToken, refreshToken, err := jwtService.GenerateToken(appConfig.APP_SECRET_KEY, appConfig.APP_SECRET_KEY_REFRESH_TOKEN, gin.H{
+	tokens, err := jwtService.GenerateTokens(gin.H{
 		"email":      "afrizalmahendra212@gmail.com",
 		"username":   "admin",
 		"password":   "admin",
 		"created_at": 0,
 		"updated_at": 0,
 		"deleted_at": 0,
-	})
+	}, appConfig.APP_SECRET_KEY, appConfig.APP_SECRET_KEY_REFRESH_TOKEN)
 
 	if err == nil {
 
 		c.JSON(http.StatusOK, gin.H{
-			"err":          err,
-			"token":        accessToken,
-			"refreshToken": refreshToken,
+			"err":    err,
+			"tokens": tokens,
 		})
 		return
 	}
@@ -37,7 +36,7 @@ func AuthLogin(c *gin.Context) {
 		"isValid": false,
 		"err":     err.Error(),
 		"data":    nil,
-		"token":   accessToken,
+		"token":   tokens,
 	})
 }
 
