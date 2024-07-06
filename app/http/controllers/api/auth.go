@@ -12,9 +12,9 @@ import (
 var appConfig *config.IAppConfig = config.NewAppConfig().Load()
 
 func AuthLogin(c *gin.Context) {
-	jwtService := jwt.NewJWTService()
+	jwtService := jwt.Instance()
 
-	token, _ := jwtService.GenerateToken(appConfig.APP_SECRET_KEY, gin.H{
+	accessToken, refreshToken, err := jwtService.GenerateToken(appConfig.APP_SECRET_KEY, appConfig.APP_SECRET_KEY_REFRESH_TOKEN, gin.H{
 		"email":      "afrizalmahendra212@gmail.com",
 		"username":   "admin",
 		"password":   "admin",
@@ -23,7 +23,22 @@ func AuthLogin(c *gin.Context) {
 		"deleted_at": 0,
 	})
 
-	c.String(http.StatusOK, token)
+	if err == nil {
+
+		c.JSON(http.StatusOK, gin.H{
+			"err":          err,
+			"token":        accessToken,
+			"refreshToken": refreshToken,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"isValid": false,
+		"err":     err.Error(),
+		"data":    nil,
+		"token":   accessToken,
+	})
 }
 
 func AuthLogout(c *gin.Context) {
@@ -32,7 +47,7 @@ func AuthLogout(c *gin.Context) {
 
 func AuthUser(c *gin.Context) {
 
-	jwtService := jwt.NewJWTService()
+	jwtService := jwt.Instance()
 	token := c.Param("token")
 
 	data, err := jwtService.ValidateToken(appConfig.APP_SECRET_KEY, token)
@@ -57,5 +72,26 @@ func AuthUser(c *gin.Context) {
 }
 
 func RefreshToken(c *gin.Context) {
+	jwtService := jwt.Instance()
+	token := c.Param("token")
 
+	data, err := jwtService.ValidateToken(appConfig.APP_SECRET_KEY_REFRESH_TOKEN, token)
+
+	if err == nil {
+
+		c.JSON(http.StatusOK, gin.H{
+			"isValid": data,
+			"err":     err,
+			"data":    data,
+			"token":   token,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"isValid": false,
+		"err":     err.Error(),
+		"data":    nil,
+		"token":   token,
+	})
 }

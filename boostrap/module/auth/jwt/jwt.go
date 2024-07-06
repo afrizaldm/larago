@@ -1,75 +1,81 @@
 package jwt
 
 import (
-	"fmt"
+	"errors"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
 
-// JWTService menyediakan fungsi untuk membuat dan memvalidasi token JWT
-type IJWTService interface {
-	GenerateToken(username string, isAdmin bool) (string, error)
-	ValidateToken(token string) (*jwt.Token, error)
+type JWTService struct {
 }
 
-type JwtService struct {
-	IJWTService
-	issuer  string
-	expHour int
+type Claims struct {
+	Value any `json:"username"`
+	jwt.RegisteredClaims
 }
 
-var jwtService *JwtService = nil
+var jwtService *JWTService = nil
 
-func NewJWTService() *JwtService {
-
+func Instance() *JWTService {
 	if jwtService != nil {
 		return jwtService
 	}
 
-	return &JwtService{
-		issuer:  "default_issuer", // Ganti dengan nama penerbit token
-		expHour: 24,
-	}
+	jwtService = &JWTService{}
+
+	return jwtService
 }
 
-func (jwtService *JwtService) GenerateToken(secretKey string, value any) (string, error) {
-	// Isi dengan kunci rahasia yang aman (sebaiknya dari variabel lingkungan).
-	_secretKey := []byte(secretKey)
-
-	// Buat token dengan klaim (misalnya, ID pengguna).
-	claims := jwt.MapClaims{
-		"value": value,
-		"iss":   jwtService.issuer,
-		"exp":   time.Now().Add(time.Hour * time.Duration(jwtService.expHour)).Unix(), // Waktu kedaluwarsa.
+func (j *JWTService) GenerateToken(secretKey string, secretKeyRefreshToken string, value any) (string, string, error) {
+	expirationTime := time.Now().Add(15 * time.Minute)
+	claims := &Claims{
+		Value: value,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
+		},
 	}
 
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
-	// Tandatangani token menggunakan kunci rahasia.
-	tokenString, err := token.SignedString(_secretKey)
+	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	accessTokenString, err := accessToken.SignedString(secretKey)
 	if err != nil {
-		return "", err
+		return "", "", err
 	}
 
-	return tokenString, nil
+	refreshExpirationTime := time.Now().Add(24 * time.Hour)
+	refreshClaims := &Claims{
+		Value: value,
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(refreshExpirationTime),
+		},
+	}
+
+	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
+	refreshTokenString, err := refreshToken.SignedString(secretKeyRefreshToken)
+	if err != nil {
+		return "", "", err
+	}
+
+	return accessTokenString, refreshTokenString, nil
 }
 
-func (jwtService *JwtService) ValidateToken(secretKey string, tokenString string) (*jwt.Token, error) {
-	_secretKey := []byte(secretKey)
+func (j *JWTService) ValidateToken(secretKey string, tokenString string) (*Claims, error) {
+	claims := &Claims{}
 
-	// Parse token dan verifikasi dengan kunci rahasia.
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return _secretKey, nil
+	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		return secretKey, nil
 	})
 
 	if err != nil {
-		return nil, err
+		if err == jwt.ErrSignatureInvalid {
+			return nil, errors.New("invalid token signature")
+		}
+		return nil, errors.New("invalid token")
 	}
 
 	if !token.Valid {
-		return nil, fmt.Errorf("token is not valid")
+		return nil, errors.New("invalid token")
 	}
 
-	return token, nil
+	return claims, nil
 }

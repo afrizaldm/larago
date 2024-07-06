@@ -20,10 +20,15 @@ var ServeCommand cli.Command = cli.Command{
 		os.Setenv("PORT", port)
 		os.Setenv("GIN_MODE", "debug")
 
+		cmd := exec.Command("go", "build", "-o", "./tmp", "cmd/main.go")
+		cmd.Run()
+
 		// Menjalankan aplikasi dalam mode debug
 		// cmd := exec.Command("go", "run", "./cmd/main.go")
 		// cmd := exec.Command("gin", "--path", ".", "--build", "cmd", "--port", "3000")
-		cmd := exec.Command("air")
+		//go build -o ./tmp cmd/main.go
+		cmd = exec.Command("air")
+
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		if err := cmd.Run(); err != nil {

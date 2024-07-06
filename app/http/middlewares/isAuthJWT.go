@@ -31,7 +31,7 @@ func IsAuthJWT() gin.HandlerFunc {
 			return
 		}
 
-		jwtService := jwt.NewJWTService()
+		jwtService := jwt.Instance()
 		appConfig := config.NewAppConfig().Load()
 
 		// Mengambil token dari array yang telah dipisahkan

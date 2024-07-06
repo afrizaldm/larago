@@ -20,12 +20,21 @@ type IAppConfig struct {
 	APP_SECRET_KEY_REFRESH_TOKEN string
 }
 
+var AppConfigInstance *AppConfig = nil
+
 func AppConfigLoad() *IAppConfig {
 	return NewAppConfig().Load()
 }
 
 func NewAppConfig() *AppConfig {
-	return &AppConfig{}
+
+	if AppConfigInstance != nil {
+		return AppConfigInstance
+	}
+
+	AppConfigInstance = &AppConfig{}
+
+	return AppConfigInstance
 }
 
 func (config *AppConfig) Load() *IAppConfig {
