@@ -28,12 +28,20 @@ type IENV struct {
 
 var ENV *IENV = nil
 
-func Load() *IENV {
-
+func Instance() *IENV {
 	// Check if ENV is already initialized
 	if ENV != nil {
 		return ENV
 	}
+
+	// Initialize ENV
+	ENV = &IENV{}
+	Load()
+
+	return ENV
+}
+
+func Load() *IENV {
 
 	// Initialize ENV
 	ENV = &IENV{}

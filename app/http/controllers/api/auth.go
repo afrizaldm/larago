@@ -9,7 +9,7 @@ import (
 )
 
 // global data in api
-var appConfig *config.IAppConfig = config.NewAppConfig().Load()
+var appConfig *config.IAppConfig = config.AppInstance()
 
 func AuthLogin(c *gin.Context) {
 	jwtService := jwt.Instance()

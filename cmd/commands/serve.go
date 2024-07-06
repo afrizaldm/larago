@@ -15,7 +15,7 @@ var ServeCommand cli.Command = cli.Command{
 	Usage: "Serve the Go application",
 	Action: func(c *cli.Context) error {
 
-		appConfig := config.NewAppConfig().Load()
+		appConfig := config.AppInstance()
 		port := strings.ReplaceAll(appConfig.APP_PORT, ":", "")
 		os.Setenv("PORT", port)
 		os.Setenv("GIN_MODE", "debug")

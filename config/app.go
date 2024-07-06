@@ -22,7 +22,7 @@ type IAppConfig struct {
 
 var AppConfigInstance *AppConfig = nil
 
-func AppConfigLoad() *IAppConfig {
+func AppInstance() *IAppConfig {
 	return NewAppConfig().Load()
 }
 

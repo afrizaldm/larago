@@ -18,7 +18,7 @@ type IDatabaseConfig struct {
 
 var DatabaseConfigInstance *DatabaseConfig = nil
 
-func DatabaseConfigLoad() *IDatabaseConfig {
+func DatabaseInstance() *IDatabaseConfig {
 	return NewDatabaseConfig().Load()
 }
 

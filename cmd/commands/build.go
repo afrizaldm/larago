@@ -38,7 +38,7 @@ var BuildCommand cli.Command = cli.Command{
 }
 
 func Clean() {
-	appConfig := config.NewAppConfig().Load()
+	appConfig := config.AppInstance()
 
 	// Hapus folder build jika ada
 	// if err := os.RemoveAll("build"); err != nil {
@@ -89,7 +89,7 @@ func SetENV() {
 }
 
 func SetStatic() {
-	appConfig := config.NewAppConfig().Load()
+	appConfig := config.AppInstance()
 
 	cmd := exec.Command("xcopy", appConfig.APP_PUBLIC, "build\\"+appConfig.APP_PUBLIC, "/E", "/I", "/Y")
 	cmd.Stdout = os.Stdout
@@ -109,7 +109,7 @@ func SetView() {
 }
 
 func SetSQlite() {
-	var appConfig = config.NewAppConfig().Load()
+	var appConfig = config.AppInstance()
 	var DBConfig = config.NewDatabaseConfig().Load()
 
 	if appConfig.APP_DB_BUILD_BACKUP {
@@ -169,7 +169,7 @@ func SetSQlite() {
 }
 
 func SetLogger() {
-	var appConfig = config.NewAppConfig().Load()
+	var appConfig = config.AppInstance()
 
 	if appConfig.APP_ACTIVE_LOGGING {
 		// Membuat folder build\logs
@@ -180,7 +180,7 @@ func SetLogger() {
 }
 
 func Build() {
-	var appConfig = config.NewAppConfig().Load()
+	var appConfig = config.AppInstance()
 
 	var filename string = "build\\" + appConfig.APP_NAME + ".exe"
 	cmd := exec.Command("go", "build", "-o", filename, "./cmd/main.go")
