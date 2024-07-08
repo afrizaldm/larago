@@ -2,7 +2,7 @@ package app
 
 import (
 	"simple-api/app/models"
-	"simple-api/boostrap/module/session"
+	"simple-api/boostrap/module/auth/session"
 	"simple-api/config"
 	"simple-api/routes"
 	"simple-api/server"
