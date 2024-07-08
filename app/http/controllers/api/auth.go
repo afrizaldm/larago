@@ -12,6 +12,9 @@ import (
 var appConfig *config.IAppConfig = config.AppInstance()
 
 func AuthLogin(c *gin.Context) {
+
+	// csrfToken := c.MustGet("csrf_tokn").(string)
+
 	jwtService := jwt.Instance()
 
 	tokens, err := jwtService.GenerateTokens(gin.H{
