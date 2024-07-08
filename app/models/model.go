@@ -2,9 +2,14 @@ package models
 
 import "simple-api/database"
 
-var DB *database.Database
+var DB *database.Database = nil
 
-func Setup() {
+func Setup() *database.Database {
+
+	if DB != nil {
+		return DB
+	}
+
 	// Initialize the database
 	DB = database.NewDatabase()
 
@@ -12,4 +17,6 @@ func Setup() {
 		&User{},
 		&Car{},
 	)
+
+	return DB
 }
