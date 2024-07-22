@@ -27,6 +27,15 @@ CLI ini menyediakan berbagai perintah yang memudahkan dalam pengembangan dan pen
     > goat serve
     ```
 
+3. **Preview Command**:
+   - **Perintah**:
+     - Menjalankan server untuk preview aplikasi.
+   - **Penggunaan**: 
+
+    ``` bash
+    > goat preview
+    ```
+
 3. **Clean Command**:
    - **Perintah**:
      - Menghapus folder `build` jika ada.
