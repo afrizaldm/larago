@@ -29,7 +29,7 @@ Untuk menginstal dan mengatur framework Go ini, ikuti langkah-langkah berikut:
 
 1. **Kloning repository**:
    ```bash
-   git clone https://github.com/username-anda/framework-anda.git
+   git clone https://github.com/afrizaldm/larago.git
    cd framework-anda
     ```
 
@@ -108,7 +108,7 @@ To install and set up this Go framework, follow these steps:
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/your-framework.git
+   git clone https://github.com/afrizaldm/larago.git
    cd your-framework
     ```
 
