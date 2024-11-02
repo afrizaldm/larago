@@ -1,6 +1,9 @@
 # Laravel-Like Go Framework
 
+Framework ini adalah hasil pengembangan saya sendiri, dirancang untuk memudahkan transisi bagi developer yang terbiasa dengan Laravel namun ingin memanfaatkan keunggulan performa Go. Dengan pengalaman dan pemahaman saya dalam kedua ekosistem tersebut, framework ini dibangun agar tetap sederhana namun mampu memenuhi kebutuhan aplikasi web berskala besar.
+
 Framework web berbasis Go yang terinspirasi oleh Laravel. Menyediakan routing, middleware, ORM, autentikasi, dan migrasi database. Framework ini dirancang untuk mempermudah pengembangan aplikasi web dengan sintaks yang sederhana dan performa optimal, cocok bagi developer Laravel yang ingin beralih ke Go.
+
 
 > **⚠️ Catatan:**
 > Proyek ini masih bersifat eksperimental dan dalam tahap pengembangan aktif. Beberapa fitur mungkin berubah atau belum lengkap. Gunakan dengan risiko Anda sendiri.
@@ -77,6 +80,8 @@ Perintah-perintah ini dirancang untuk memperlancar proses pengembangan dan menin
 ---
 
 # Laravel-Like Go Framework
+
+This framework is my own creation, designed to ease the transition for developers familiar with Laravel who want to leverage Go's performance advantages. With my experience and understanding of both ecosystems, I built this framework to remain simple while effectively meeting the demands of large-scale web applications.
 
 A Go-based web framework inspired by Laravel. It offers routing, middleware, ORM, authentication, and database migrations. This framework is designed to simplify web application development with easy syntax and optimal performance, making it ideal for Laravel developers transitioning to Go.
 
